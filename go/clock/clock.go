@@ -1,41 +1,30 @@
 package clock
 
-import (
-	"fmt"
-)
+import "fmt"
 
-type Clock struct {
-    hours, mins, totalMins int
+type Clock int
+
+// Create and return a clock based on the hours and minutes given
+func New(hours, mins int) Clock {
+
+	clock := Clock( (hours * 60 + mins) % (24 * 60) )
+
+	// if the clock is less than 0, add a days worth of minutes to it
+	// this is because both the hours and minutes passed in can be more than and less than a day (25:00 or -25:00 etc)
+	for clock < 0 {
+		clock += (24 * 60)
+	}
+
+	return clock
 }
 
-func New(hours int, mins int) Clock {
-    c := new(Clock)
-
-    // Store total minutes so we can format for output later on.
-    // Take the hours, multiple by 60 and add to the minutes as well.
-    c.totalMins = (hours * 60) + mins
-    return c.FormatTime()
-}
-
-// this function takes total minutes and calculates the hours & minutes
-func (c Clock) FormatTime() Clock {
-
-	c.hours = c.totalMins / 60
-	c.mins = c.totalMins - (c.hours * 60)
-	c.hours = c.hours % 24
-
-	return c
-}
-
-// return the hours & minutes as a readable format HH:MM
+// return the clock as a readable format HH:MM
 // it will pad space with 0, so 1 hour 5 minutes will be 01:05 instead of 1:5
-func (c Clock) String() string {
-	return fmt.Sprintf("%0.2d:%0.2d", c.hours, c.mins)
+func (clock Clock) String() string {
+	return fmt.Sprintf("%0.2d:%0.2d", clock/60, clock%60)
 }
 
-
-func (c Clock) Add(addedMins int) Clock {
-	c.totalMins = c.totalMins + addedMins
-
-	return c.FormatTime()
+// Add minutes to the clock we already have - because it's done via New() it'll handle sorting the hours etc
+func (clock Clock) Add(mins int) Clock {
+	return New(0, int(clock) + mins)
 }
