@@ -1,9 +1,9 @@
 package triangle
 
-// A Kind denotes a type of triangle.
+// A Kind denotes the type of triangle
 type Kind uint8
 
-// Kinds of triangles.
+// Kinds of triangles we can possibly have
 const (
 	Equ Kind = iota // equilateral
 	Iso             // isosceles
@@ -11,8 +11,8 @@ const (
 	NaT             // not a triangle
 )
 
-// KindFromSides returns the Kind of the triangle defined by the lengths
-// of its sides a, b and c.
+// KindFromSides returns the Kind of the triangle it is.
+// it's defined by the lengths of its sides a, b and c.
 func KindFromSides(a, b, c float64) Kind {
 	switch {
 		case ! (a+b > c && a+c > b && b+c > a):
