@@ -15,13 +15,13 @@ const (
 // it's defined by the lengths of its sides a, b and c.
 func KindFromSides(a, b, c float64) Kind {
 	switch {
-		case ! (a+b > c && a+c > b && b+c > a):
-			return NaT
-		case a == b && b == c:
-			return Equ
-		case a == b || a == c || b == c:
-			return Iso
-		default:
-			return Sca
+	case !(a+b > c && a+c > b && b+c > a):
+		return NaT
+	case a == b && b == c:
+		return Equ
+	case a == b || a == c || b == c:
+		return Iso
+	default:
+		return Sca
 	}
 }
