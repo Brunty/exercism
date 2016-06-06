@@ -15,7 +15,7 @@ func Distance(a, b string) (int, error) {
 		return -1, errors.New(fmt.Sprintf("The two strings are not equal - a: %d b: %d", lengthOfA, lengthOfB))
 	}
 
-	var diff int = 0
+	var diff int
 
 	for i := range a {
 		if a[i] != b[i] {
