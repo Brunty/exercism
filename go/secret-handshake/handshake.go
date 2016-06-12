@@ -1,32 +1,37 @@
 package secret
 
-import "sort"
+type SecretHandshake struct {
+	action string
+	binary int
+}
 
-var sequence sort.StringSlice = []string{"wink", "double blink", "close your eyes", "jump"}
+const REVERSE = 16
 
-func Handshake(input int) []string {
-    handshake := []string{}
+var sequence = []SecretHandshake{{"wink", 1}, {"double blink", 2}, {"close your eyes", 4}, {"jump", 8}}
 
-    if input <= 0 {
-        return handshake
-    }
+func Handshake(givenCode int) []string {
+	handshake := []string{}
 
-    for i, step := range sequence {
-        if 1 << uint(i) & input > 0 {
-            handshake = append(handshake, step)
-        }
-    }
+	if givenCode <= 0 {
+		return handshake
+	}
 
-    if 1 << uint(len(sequence)) & input > 0 {
-        reverse(handshake)
-    }
+	for _, secret := range sequence {
+		if secret.binary&givenCode == secret.binary {
+			handshake = append(handshake, secret.action)
+		}
+	}
 
-    return handshake
+	if REVERSE&givenCode > 0 {
+		reverse(handshake)
+	}
+
+	return handshake
 }
 
 /* wondering if there's not a better way to do this with sort.* functions? */
 func reverse(strings []string) {
-    for i, j := 0, len(strings) - 1; i < j; i, j = i + 1, j - 1 {
-        strings[i], strings[j] = strings[j], strings[i]
-    }
+	for i, j := 0, len(strings)-1; i < j; i, j = i+1, j-1 {
+		strings[i], strings[j] = strings[j], strings[i]
+	}
 }
